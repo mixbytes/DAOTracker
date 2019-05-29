@@ -10,7 +10,6 @@ import {environment} from '../../../environments/environment';
 export class DashboardComponent implements OnInit {
 
   eosQuote$: Observable<boolean>;
-  showAds = environment.showAds;
 
   constructor(
     private appService: AppService
