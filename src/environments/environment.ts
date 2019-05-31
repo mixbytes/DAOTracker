@@ -7,11 +7,11 @@ export const environment = {
   production: false,
   walletUrl: 'https://walleteos.com',
   votingUrl: 'https://eosportal.io',
-  appName: 'Haya Tracker',
+  appName: 'DAO Tracker',
   logoUrl: '/assets/logo.png',
-  blockchainUrl: 'http://127.0.0.1:8888',
+  blockchainUrl: 'http://134.209.249.155:8888',
   chainId: '4520bb15de39f4092ed02018139068312ce4a728fbe17eadde2be0be2074ad41',
   tokensUrl: 'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/tokens.json',
   tickerUrl: 'https://api.coinmarketcap.com/v2/ticker/1765/',
-  token: 'EOS'
+  token: 'BET'
 };
