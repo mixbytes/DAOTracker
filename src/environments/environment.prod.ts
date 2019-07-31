@@ -9,7 +9,7 @@ export const environment = {
   votingUrl: 'https://eosportal.io',
   appName: 'DAO Tracker',
   logoUrl: '/assets/logo.png',
-  blockchainUrl: 'https://explorer.dao.casino/node',
+  blockchainUrl: 'http://206.81.28.138:8888',
   chainId: '4520bb15de39f4092ed02018139068312ce4a728fbe17eadde2be0be2074ad41',
   tokensUrl: 'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/tokens.json',
   tickerUrl: 'https://api.coinmarketcap.com/v2/ticker/1765/',
