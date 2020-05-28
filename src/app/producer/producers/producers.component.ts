@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { EosService } from '../../services/eos.service';
 import { Observable, of, timer } from 'rxjs';
-import { map, share, switchMap } from 'rxjs/operators';
+import { map, share, switchMap, mergeMap } from 'rxjs/operators';
 import {environment} from '../../../environments/environment';
+import { EOSGlobalTableRow, EOSGlobalTable } from '../../interfaces/eos.global.table'
 
 @Component({
   templateUrl: './producers.component.html',
@@ -14,18 +15,35 @@ export class ProducersComponent implements OnInit {
   columnHeaders$: Observable<string[]> = of(PRODUCERS_COLUMNS);
   producers$: Observable<any[]>;
   chainStatus$: Observable<any>;
+  private EOSGlobalTable: EOSGlobalTable
 
   constructor(
     private breakpointObserver: BreakpointObserver,
     private eosService: EosService
   ) { }
 
-  countRewards(total_votes, index, totalProducerVoteWeight, votesToRemove) {
-    const position = index;
+  async getGlobalTableContent(): Promise<EOSGlobalTableRow> {
+    let table = this.EOSGlobalTable
+    if (!table) table = await this.eosService.eos.getTableRows({
+      json: true,
+      code: "eosio",
+      scope: "eosio",
+      table: "global"
+    })
+    return table && table.rows && table.rows.length ? table.rows[0] : null
+  }
+
+  async countActiveProducers() {
+    const globalTable = await this.getGlobalTableContent();
+    return globalTable.target_producer_schedule_size || 21
+  }
+
+  async countRewards(total_votes, index, totalProducerVoteWeight, votesToRemove) {
     let reward = 0;
+    const position = index;
     const percentageVotesRewarded = total_votes / (totalProducerVoteWeight - votesToRemove) * 100;
 
-    if (position < 22) reward += 443;
+    if (position < await this.countActiveProducers()) reward += 443;
     reward += percentageVotesRewarded * 200;
     if (reward < 100) reward = 0;
 
@@ -33,6 +51,8 @@ export class ProducersComponent implements OnInit {
   }
 
   ngOnInit() {
+    let activeCount = 21;
+    this.countActiveProducers().then(n => activeCount = n)
     this.columnHeaders$ = this.breakpointObserver.observe(Breakpoints.XSmall).pipe(
       map(result => result.matches ? PRODUCERS_COLUMNS.filter((c: any) => (c !== 'url' && c !== 'numVotes')) : PRODUCERS_COLUMNS)
     );
@@ -42,18 +62,19 @@ export class ProducersComponent implements OnInit {
     );
     this.producers$ = this.chainStatus$.pipe(
       switchMap(chainStatus => this.eosService.getProducers().pipe(
-        map(producers => {
+        mergeMap(async producers => {
           const votesToRemove = producers.reduce((acc, cur) => {
             const percentageVotes = cur.total_votes / chainStatus.total_producer_vote_weight * 100;
-            if (percentageVotes * 200 < 100) {
-              acc += parseFloat(cur.total_votes);
-            }
+            if (percentageVotes * 200 < 100) acc += parseFloat(cur.total_votes);
             return acc;
           }, 0);
+          const activeCount = await this.countActiveProducers()
           return producers.map((producer, index) => {
-            const position = parseInt(index) + 1;
-            const percentageVotes = producer.total_votes / chainStatus.total_producer_vote_weight * 100;
             let reward = 0;
+            const position = parseInt(index) + 1;
+            const active = position <= activeCount;
+            const numVotes = (producer.total_votes / this.calculateVoteWeight() / 10000).toFixed(0)
+            const votes = (producer.total_votes / chainStatus.total_producer_vote_weight * 100).toFixed(2);
 
             if (environment.token === 'TLOS') {
               if (position < 22) {
@@ -62,17 +83,15 @@ export class ProducersComponent implements OnInit {
                 reward = 400;
               }
             } else {
-              //
-              reward = this.countRewards(producer.total_votes, index, chainStatus.total_producer_vote_weight, votesToRemove);
+              reward = this.countRewards(
+                producer.total_votes,
+                index,
+                chainStatus.total_producer_vote_weight,
+                votesToRemove
+              ) as any
             }
 
-            return {
-              ...producer,
-              position: position,
-              reward: reward.toFixed(0),
-              votes: percentageVotes.toFixed(2),
-              numVotes: (producer.total_votes / this.calculateVoteWeight() / 10000).toFixed(0)
-            }
+            return { ...producer, position, reward, votes, numVotes, active }
           });
         })
       )),
