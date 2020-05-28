@@ -20,6 +20,18 @@ export class ProducersComponent implements OnInit {
     private eosService: EosService
   ) { }
 
+  countRewards(total_votes, index, totalProducerVoteWeight, votesToRemove) {
+    const position = index;
+    let reward = 0;
+    const percentageVotesRewarded = total_votes / (totalProducerVoteWeight - votesToRemove) * 100;
+
+    if (position < 22) reward += 443;
+    reward += percentageVotesRewarded * 200;
+    if (reward < 100) reward = 0;
+
+    return Math.floor(reward);
+  }
+
   ngOnInit() {
     this.columnHeaders$ = this.breakpointObserver.observe(Breakpoints.XSmall).pipe(
       map(result => result.matches ? PRODUCERS_COLUMNS.filter((c: any) => (c !== 'url' && c !== 'numVotes')) : PRODUCERS_COLUMNS)
@@ -39,10 +51,9 @@ export class ProducersComponent implements OnInit {
             return acc;
           }, 0);
           return producers.map((producer, index) => {
-            let position = parseInt(index) + 1;
+            const position = parseInt(index) + 1;
+            const percentageVotes = producer.total_votes / chainStatus.total_producer_vote_weight * 100;
             let reward = 0;
-            let percentageVotes = producer.total_votes / chainStatus.total_producer_vote_weight * 100;
-            let percentageVotesRewarded = producer.total_votes / (chainStatus.total_producer_vote_weight - votesToRemove) * 100;
 
             if (environment.token === 'TLOS') {
               if (position < 22) {
@@ -51,13 +62,8 @@ export class ProducersComponent implements OnInit {
                 reward = 400;
               }
             } else {
-              if (position < 22) {
-                reward += 318;
-              }
-              reward += percentageVotesRewarded * 200;
-              if (reward < 100) {
-                reward = 0;
-              }
+              //
+              reward = this.countRewards(producer.total_votes, index, chainStatus.total_producer_vote_weight, votesToRemove);
             }
 
             return {
