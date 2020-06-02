@@ -6,4 +6,3 @@ interface NodeModule {
 
 interface Window { ConfettiGenerator: any }
 
-declare module 'eosjs';

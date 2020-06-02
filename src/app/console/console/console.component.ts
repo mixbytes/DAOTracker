@@ -16,16 +16,14 @@ export class ConsoleComponent implements OnInit {
     private eosService: EosService
   ) { }
 
-  ngOnInit() {
-    this.apiEndpoint$ = this.eosService.apiEndpoint$;
-  }
+  ngOnInit() {}
 
   getInfo() {
-    this.result$ = from(this.eosService.eos.getInfo({}));
+    this.result$ = from(this.eosService.rpc.get_info());
   }
 
   getBlock(block_num_or_id: number) {
-    this.result$ = from(this.eosService.eos.getBlock(block_num_or_id));
+    this.result$ = from(this.eosService.rpc.get_block(block_num_or_id));
   }
 
 }
