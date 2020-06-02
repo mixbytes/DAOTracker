@@ -40,6 +40,10 @@
           <td>{{ 'Number of Actions' | translate }}:</td>
           <td>{{transaction.trx.trx?.actions?.length || 0}}</td>
         </tr>
+        <tr *ngIf="transaction.sponsored_by">
+          <td>{{ 'Sponsored by' | translate }}:</td>
+          <td>{{transaction.sponsored_by}}</td>
+        </tr>
       </table>
     </mat-card-content>
   </mat-card>
