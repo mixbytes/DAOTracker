@@ -19,11 +19,11 @@ export class ConsoleComponent implements OnInit {
   ngOnInit() {}
 
   getInfo() {
-    this.result$ = from(this.eosService.rpc.get_info());
+    this.result$ = from(this.eosService.eos.get_info());
   }
 
   getBlock(block_num_or_id: number) {
-    this.result$ = from(this.eosService.rpc.get_block(block_num_or_id));
+    this.result$ = from(this.eosService.eos.get_block(block_num_or_id));
   }
 
 }
