@@ -21,7 +21,12 @@ export class TablesComponent implements OnInit {
     if (this.account && this.account.abi && this.account.abi.tables) {
       const table$s: Observable<any>[] = this.account.abi.tables.map(table => {
         return from(
-          this.eosService.eos.getTableRows(true, this.account.name, this.account.name, table.name, table.key_names[0])
+          this.eosService.eos.get_table_rows({
+            json: true,
+            scope: this.account.name,
+            table: this.account.name,
+            table_key: table.key_names[0]
+          })
         ).pipe(
           map(tableRows => ({ ...table, ...tableRows }))
         );
