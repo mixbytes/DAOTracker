@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Serialize } from 'eosjs';
 import { SPONSORSHIP_EXT } from '../../../services/eos.abi'
 import { EosService } from '../../../services/eos.service';
+import { TextEncoder, TextDecoder } from 'text-encoding'
 
 @Component({
   selector: 'app-transaction-information',
