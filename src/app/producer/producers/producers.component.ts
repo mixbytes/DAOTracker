@@ -24,7 +24,7 @@ export class ProducersComponent implements OnInit {
 
   async getGlobalTableContent(): Promise<EOSGlobalTableRow> {
     let table = this.EOSGlobalTable
-    if (!table) table = await this.eosService.eos.getTableRows({
+    if (!table) table = await this.eosService.eos.get_table_rows({
       json: true,
       code: "eosio",
       scope: "eosio",
