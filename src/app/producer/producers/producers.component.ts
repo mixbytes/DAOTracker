@@ -82,7 +82,6 @@ export class ProducersComponent implements OnInit {
               .map((producer, index) => {
             let reward = 0;
             const position = parseInt(index, 10) + 1;
-            console.log(producer.owner, producer.is_active, position);
             const active = producer.is_active && position <= activeCount;
             const numVotes = (producer.total_votes / this.calculateVoteWeight() / 10000).toFixed(0);
             const votes = (producer.total_votes / chainStatus.total_producer_vote_weight * 100).toFixed(2);
