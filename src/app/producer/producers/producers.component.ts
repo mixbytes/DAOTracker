@@ -84,7 +84,7 @@ export class ProducersComponent implements OnInit {
             let reward = 0;
             const position = parseInt(index, 10) + 1;
             const active = producer.is_active === 1;
-            const bad = !active && position <= activeCount;
+            const bad = false // DISABLE. logic: !active && position <= activeCount;
             console.log(producer.owner, position, active);
             const numVotes = (producer.total_votes / this.calculateVoteWeight() / 10000).toFixed(0);
             const votes = (producer.total_votes / chainStatus.total_producer_vote_weight * 100).toFixed(2);
