@@ -37,7 +37,6 @@ export class ProducersComponent implements OnInit {
 
   async countActiveProducers() {
     const globalTable = await this.getGlobalTableContent();
-    console.log(globalTable.target_producer_schedule_size)
     return globalTable.target_producer_schedule_size || 21;
   }
 
@@ -85,7 +84,7 @@ export class ProducersComponent implements OnInit {
             const position = parseInt(index, 10) + 1;
             const active = producer.is_active === 1;
             const bad = false;// DISABLED. logic: !active && position <= activeCount;
-            console.log(producer.owner, position, active);
+
             const numVotes = (producer.total_votes / this.calculateVoteWeight() / 10000).toFixed(0);
             const votes = (producer.total_votes / chainStatus.total_producer_vote_weight * 100).toFixed(2);
 
