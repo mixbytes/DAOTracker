@@ -35,14 +35,14 @@ export class SettingsComponent implements OnInit {
 
     // setup api control
     this.apiControl = new FormControl();
-    this.eosService.apiEndpoint$.pipe(
-      take(1)
-    ).subscribe(apiEndpoint => {
-      this.apiControl.setValue(apiEndpoint);
-    });
-    this.apiControl.valueChanges.subscribe(apiEndpoint => {
-      this.eosService.setApiEndpoint(apiEndpoint);
-    });
+    // this.eosService.apiEndpoint$.pipe(
+    //   take(1)
+    // ).subscribe(apiEndpoint => {
+    //   this.apiControl.setValue(apiEndpoint);
+    // });
+    // this.apiControl.valueChanges.subscribe(apiEndpoint => {
+    //   this.eosService.setApiEndpoint(apiEndpoint);
+    // });
   }
 
 }

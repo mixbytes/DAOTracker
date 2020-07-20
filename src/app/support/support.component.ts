@@ -34,7 +34,7 @@ export class SupportComponent implements OnInit {
     this.info = null;
     this.alive = false;
 
-    this.eosService.eos.getTableRows(
+    this.eosService.eos.get_table_rows(
       {
         json: true,
         code: this.contract,
@@ -47,7 +47,7 @@ export class SupportComponent implements OnInit {
     });
 
 
-    this.eosService.eos.getTableRows(
+    this.eosService.eos.get_table_rows(
       {
         json: true,
         code: this.contract,
@@ -59,7 +59,7 @@ export class SupportComponent implements OnInit {
       this.patrons = result.rows.sort(this.compare);
     });
 
-    this.eosService.eos.getTableRows(
+    this.eosService.eos.get_table_rows(
       {
         json: true,
         code: this.contract,
