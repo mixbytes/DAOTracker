@@ -1,5 +1,5 @@
 import { Component, OnChanges, Input } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { CustomTokensComponent } from '../custom-tokens/custom-tokens.component';
 
 @Component({

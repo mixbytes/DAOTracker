@@ -7,7 +7,6 @@ import { map, catchError, switchMap } from 'rxjs/operators';
 import { JsSignatureProvider } from 'eosjs/dist/eosjs-jssig';
 import { Result } from '../models';
 import { LoggerService } from './logger.service';
-import { TextEncoder, TextDecoder } from 'text-encoding'
 
 @Injectable()
 export class EosService {
@@ -20,11 +19,9 @@ export class EosService {
     private http: HttpClient,
     private logger: LoggerService
   ) {
-    const textEncoder = new TextEncoder()
-    const textDecoder = new TextDecoder();
     const rpc = this.eos = new JsonRpc(environment.blockchainUrl, { fetch });
     const signatureProvider = new JsSignatureProvider([]);
-    this.api = new Api({ rpc, signatureProvider, textEncoder, textDecoder })
+    this.api = new Api({ rpc, signatureProvider })
   }
 
   setApiEndpoint(url: string) {
