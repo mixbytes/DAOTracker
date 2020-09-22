@@ -5,6 +5,7 @@
 
 export const environment = {
   production: false,
+  platformAcc: 'ttplatform',
   walletUrl: 'https://walleteos.com',
   votingUrl: 'https://eosportal.io',
   appName: 'DAO Tracker',

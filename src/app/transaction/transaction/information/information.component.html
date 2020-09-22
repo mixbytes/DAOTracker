@@ -44,6 +44,38 @@
           <td>{{ 'Sponsored by' | translate }}:</td>
           <td>{{transaction.sponsored_by}}</td>
         </tr>
+        <tr *ngIf="transaction.game && transaction.game.casino">
+          <td>{{ 'Casino' | translate }}:</td>
+          <td><a [routerLink]="['/accounts',transaction.game.casino]">{{transaction.game.casino}}</a></td>
+        </tr>
+        <tr *ngIf="transaction.game && transaction.game.contract">
+          <td>{{ 'Game contract' | translate }}:</td>
+          <td><a [routerLink]="['/accounts',transaction.game.contract]">{{transaction.game.contract}}</a></td>
+        </tr>
+        <tr *ngIf="transaction.game && transaction.game.player">
+          <td>{{ 'Game player account' | translate }}:</td>
+          <td><a [routerLink]="['/accounts',transaction.game.player]">{{transaction.game.player}}</a></td>
+        </tr>
+        <tr *ngIf="transaction.game && transaction.game.bet">
+          <td>{{ 'Game total bet' | translate }}:</td>
+          <td>{{transaction.game.bet}}</td>
+        </tr>
+        <tr *ngIf="transaction.game && transaction.game.session">
+          <td>{{ 'Game session ID' | translate }}:</td>
+          <td>{{transaction.game.session}}</td>
+        </tr>
+        <tr *ngIf="transaction.game && transaction.game.win_amount">
+          <td>{{ 'Game win amount' | translate }}:</td>
+          <td>{{transaction.game.win_amount}}</td>
+        </tr>
+        <tr *ngIf="transaction.game && transaction.game.event">
+          <td>{{ 'Game event type' | translate }}:</td>
+          <td>{{transaction.game.event}}</td>
+        </tr>
+        <tr *ngIf="transaction.game && transaction.game.data">
+          <td>{{ 'Game event data' | translate }}:</td>
+          <td><code>{{transaction.game.data}}</code></td>
+        </tr>
       </table>
     </mat-card-content>
   </mat-card>
