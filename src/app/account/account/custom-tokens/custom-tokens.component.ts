@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AppService } from '../../../services/app.service';
 import { EosService } from '../../../services/eos.service';
 import { from } from 'rxjs';
@@ -32,7 +32,7 @@ export class CustomTokensComponent implements OnInit {
 
   submit() {
     const token = this.tokenForm.value;
-    this.token$ = from(this.eosService.eos.getCurrencyBalance(token.account, this.data.account, token.symbol)).pipe(
+    this.token$ = from(this.eosService.eos.get_currency_balance(token.account, this.data.account, token.symbol)).pipe(
       filter((balance: string[]) => balance && balance.length > 0),
       map(balance => balance[0])
     );

@@ -77,7 +77,7 @@ export class AppService {
       share()
     );
     this.ramQuote$ = timer(0, RAM_QUOTE).pipe(
-      switchMap(() => from(this.eosService.eos.getTableRows({
+      switchMap(() => from(this.eosService.eos.get_table_rows({
         json: true,
         code: "eosio",
         scope: "eosio",

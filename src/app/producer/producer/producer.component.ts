@@ -20,6 +20,18 @@ export class ProducerComponent implements OnInit {
     private appService: AppService
   ) { }
 
+  countRewards(total_votes, index, totalProducerVoteWeight, votesToRemove) {
+    const position = index;
+    let reward = 0;
+    const percentageVotesRewarded = total_votes / (totalProducerVoteWeight - votesToRemove) * 100;
+
+    if (position < 22) reward += 443;
+    reward += percentageVotesRewarded * 200;
+    if (reward < 100) reward = 0;
+
+    return Math.floor(reward).toLocaleString();
+  }
+
   ngOnInit() {
     this.name$ = this.route.params.pipe(
       map(params => params.id)
@@ -42,24 +54,10 @@ export class ProducerComponent implements OnInit {
           }
           return acc;
         }, 0);
-        let position = parseInt(index) + 1;
-        let reward = 0;
-        let percentageVotes = producer.total_votes / chainStatus.total_producer_vote_weight * 100;
-        let percentageVotesRewarded = producer.total_votes / (chainStatus.total_producer_vote_weight - votesToRemove) * 100;
-        if (position < 22) {
-          reward += 318;
-        }
-        reward += percentageVotesRewarded * 200;
-        if (percentageVotes * 200 < 100) {
-          reward = 0;
-        }
-        return {
-          ...producer,
-          account: account,
-          position: position,
-          reward: reward.toFixed(0),
-          votes: percentageVotes.toFixed(2)
-        }
+        const position = parseInt(index) + 1;
+        const reward = this.countRewards(producer.total_votes, index, chainStatus.total_producer_vote_weight, votesToRemove);
+        const votes = (producer.total_votes / chainStatus.total_producer_vote_weight * 100).toFixed(2);
+        return { ...producer, account, position, reward, votes }
       }),
       switchMap(producer => {
         if (!producer.url) {
